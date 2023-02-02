@@ -1,0 +1,7 @@
+require('./HistoryVisiter')
+require('./UserStats')
+require('./HistoryChatCount')
+require('./HistoryReport')
+require('./HistoryConversation')
+require('./IndexChat')
+require('./SettingInit')

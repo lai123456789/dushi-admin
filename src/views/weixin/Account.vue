@@ -1,0 +1,63 @@
+<template>
+  <a-spin :spinning="loading">
+    <a-form :form="form">
+      <a-form-item label="Token：" :labelCol="labelCol" :wrapperCol="wrapperCol" help="请输入消息校验Token">
+        <a-input v-decorator="['info[token]', {initialValue: data.token}]" />
+      </a-form-item>
+      <a-form-item label="AppID：" :labelCol="labelCol" :wrapperCol="wrapperCol" help="请输入开发者凭据AppId">
+        <a-input v-decorator="['info[appid]', {initialValue: data.appid}]" />
+      </a-form-item>
+      <a-form-item label="AppSecret：" :labelCol="labelCol" :wrapperCol="wrapperCol" help="请输入开发者凭据AppSecret">
+        <a-input v-decorator="['info[appsecret]', {initialValue: data.appsecret}]" />
+      </a-form-item>
+      <a-form-item label="EncodingAesKey：" :labelCol="labelCol" :wrapperCol="wrapperCol" help="请输入消息加解密Key">
+        <a-input v-decorator="['info[encodingAesKey]', {initialValue: data.encodingAesKey}]" />
+      </a-form-item>
+      <a-form-item :wrapperCol="{ span: 12 }" style="text-align: center" >
+        <a-button htmlType="submit" type="primary" @click="handleSubmit">保存</a-button>
+      </a-form-item>
+    </a-form>
+  </a-spin>
+</template>
+<script>
+export default {
+  data () {
+    return {
+      loading: false,
+      form: this.$form.createForm(this),
+      data: {},
+      labelCol: { span: 4 },
+      wrapperCol: { span: 8 }
+    }
+  },
+  created () {
+    this.loading = true
+    this.axios({
+      url: '/weixin/account/init'
+    }).then((res) => {
+      this.loading = false
+      this.data = res.result
+    })
+  },
+  methods: {
+    handleSubmit () {
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          this.loading = true
+          this.axios({
+            url: '/weixin/account/init',
+            data: values
+          }).then((res) => {
+            this.loading = false
+            if (res.message) {
+              this.$message.warning(res.message)
+            } else {
+              this.$message.success('操作成功')
+            }
+          })
+        }
+      })
+    }
+  }
+}
+</script>

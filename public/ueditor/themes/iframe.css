@@ -1,0 +1,9 @@
+/*可以在这里添加你自己的css*/
+body {
+    font-size: 14px;
+}
+
+img {
+    max-width: 100%; /*图片自适应宽度*/
+    height: auto;
+}
